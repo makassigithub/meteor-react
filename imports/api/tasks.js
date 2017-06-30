@@ -4,6 +4,14 @@ import { check } from 'meteor/meteor';
 
 export const Tasks = new Mongo.Collection('tasks');
 
+//Enable publication on meteor serverside after removing autopublish
+if (Meteor.isServer) {
+  // This code only runs on the server
+  Meteor.publish('tasks', function tasksPublication() {
+    return Tasks.find();
+  });
+}
+
 Meteor.methods({
   'tasks.insert'(text) {
     check(text, String);

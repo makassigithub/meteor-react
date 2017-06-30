@@ -26,7 +26,7 @@ handleSubmit(event) {
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
 
     Meteor.call('tasks.insert', text);
-    
+
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
@@ -98,6 +98,10 @@ App.propTypes = {
 //the App re-renders, as we'll soon see!
 
 export default createContainer(() => {
+
+  // subscribe to the serverside publication in finding all tasks.
+  
+  Meteor.subscribe('tasks');
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
